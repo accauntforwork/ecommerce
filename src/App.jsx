@@ -2,7 +2,7 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
-import Card from "./pages/Card";
+import Card from "./pages/shoppingCart";
 import ProductDetail from "./pages/ProductDetail";
 
 function App() {

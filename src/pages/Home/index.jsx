@@ -1,8 +1,11 @@
 import React from "react";
 // import useProductData from "../../hooks/useProductData";
-import data from "../../../featured.json";
+import data from "../../../data.json";
 import { Link } from "react-router-dom";
 const products = data.data;
+const featuredProduct = products.filter(
+  (product) => product.attributes.featured
+);
 
 // const useProductData = () => {
 //   const [loading, setLoading] = useState(true);
@@ -79,8 +82,8 @@ function Home() {
       <div>
         <h2 className="text-4xl mt-20 mb-12">Featured Products</h2>
         <hr className="mb-16" />
-        <div className="flex gap-4">
-          {products.map((product) => (
+        <div className="flex gap-4 flex-wrap">
+          {featuredProduct.map((product) => (
             <Link
               to={`/product/${product.id}`}
               key={product.id}
