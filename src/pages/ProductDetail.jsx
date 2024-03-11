@@ -1,27 +1,52 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import data from "../../data.json";
-// console.log("4 productdetails");
-// console.log(data);
 
 const ProductDetail = () => {
   const { id } = useParams();
-  //   console.log(9 + "" + id);
-
   const product = data.data.find((p) => p.id == id);
-  // console.log(product);
 
   if (!product) {
     return <div>Product not found</div>;
   }
 
-  const [select, setSelect] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedAmount, setSelectedAmount] = useState(1);
 
+  const handleColorClick = (color) => {
+    setSelectedColor(color);
+  };
+
+  const handleAmountChange = (event) => {
+    setSelectedAmount(parseInt(event.target.value, 10));
+  };
+
+  const handleAddToBag = () => {
+    if (selectedColor == null) {
+      alert("Avval rang tanlang");
+      return;
+    }
+    const cartItem = {
+      id: product.id,
+      title: product.attributes.title,
+      color: selectedColor,
+      amount: selectedAmount,
+      company: product.attributes.company,
+      price: product.attributes.price / 100,
+      image: product.attributes.image,
+    };
+
+    const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const updatedCart = [...existingCart, cartItem];
+
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
   return (
     <div>
       <p className="mt-16 mb-8 text-gray">Home {">"} Products</p>
 
-      <div className="flex al justify-between gap-12">
+      <div className="flex justify-between gap-12">
         <img
           src={product.attributes.image}
           alt={product.attributes.title}
@@ -41,28 +66,37 @@ const ProductDetail = () => {
           <div className="flex gap-2">
             {product.attributes.colors.map((color, index) => (
               <span
+                key={index}
                 className="block rounded-full h-4 w-4 cursor-pointer"
                 style={{
                   backgroundColor: color,
-                  border: select ? "solid 2px black" : "none",
+                  border: selectedColor === color ? "solid 2px black" : "none",
                 }}
-                key={index}
+                onClick={() => handleColorClick(color)}
               ></span>
             ))}
           </div>
           <h4 className="font-semibold mt-4 mb-2">Amount</h4>
           <div>
-            <select className="select select-primary w-[70%]">
+            <select
+              className="select select-primary w-[70%]"
+              value={selectedAmount}
+              onChange={handleAmountChange}
+            >
               <option value={1}>1</option>
               <option value={2}>2</option>
               <option value={3}>3</option>
             </select>
           </div>
-          <button className="btn btn-neutral uppercase mt-12">
+          <button
+            className="btn btn-neutral uppercase mt-12"
+            onClick={handleAddToBag}
+          >
             Add to bag
           </button>
         </div>
       </div>
+      <div className="block h-20"></div>
     </div>
   );
 };

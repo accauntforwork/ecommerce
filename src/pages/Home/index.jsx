@@ -82,12 +82,12 @@ function Home() {
       <div>
         <h2 className="text-4xl mt-20 mb-12">Featured Products</h2>
         <hr className="mb-16" />
-        <div className="flex gap-4 flex-wrap">
+        <div className="flex gap-4 flex-wrap justify-center">
           {featuredProduct.map((product) => (
             <Link
               to={`/product/${product.id}`}
               key={product.id}
-              className="card w-96 bg-base-100 shadow-xl cursor-pointer"
+              className="card w-80 bg-base-100 shadow-xl cursor-pointer"
             >
               <figure className="px-5 pt-5">
                 <img
